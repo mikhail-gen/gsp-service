@@ -5,7 +5,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=gsp
     username: postgres
-    password: postgres
+    password: retro
     driver-class-name: org.postgresql.Driver
 
   jpa:
