@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BillSplitter2Application {
+public class GspApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BillSplitter2Application.class, args);
+		SpringApplication.run(GspApplication.class, args);
 	}
 
 }

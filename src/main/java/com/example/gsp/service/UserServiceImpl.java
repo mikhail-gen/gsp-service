@@ -2,6 +2,10 @@ package com.example.gsp.service;
 
 import com.example.gsp.dto.user.CreateUserRequestDto;
 import com.example.gsp.dto.user.CreateUserResponseDto;
+import com.example.gsp.entity.User;
+import com.example.gsp.mapper.UserMapper;
+import com.example.gsp.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,40 +13,38 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
-public class UserServiceImpl implements UserService{
+@RequiredArgsConstructor
+public class UserServiceImpl implements UserService {
 
-    private final List<CreateUserResponseDto> users = new ArrayList<>();
-    private final AtomicLong idCounter = new AtomicLong(1);
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-    // Create a new user
+    @Override
     public CreateUserResponseDto createUser(CreateUserRequestDto request) {
-        CreateUserResponseDto user = new CreateUserResponseDto(
-            idCounter.getAndIncrement(),
-            request.name(),
-            request.pinfl()
-        );
-        users.add(user);
-        return user;
+        User user = userMapper.toEntity(request);
+        User savedUser = userRepository.save(user);
+        return userMapper.toResponseDto(savedUser);
     }
 
-    // Get all users
+    @Override
     public List<CreateUserResponseDto> getAllUsers() {
-        return new ArrayList<>(users);
+        return userRepository.findAll()
+            .stream()
+            .map(userMapper::toResponseDto)
+            .toList();
     }
 
-    // Get user by ID
+    @Override
     public CreateUserResponseDto getUserById(Long id) {
-        return users.stream()
-            .filter(u -> u.id().equals(id))
-            .findFirst()
+        return userRepository.findById(id)
+            .map(userMapper::toResponseDto)
             .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 
-    // Get user by PINFL
+    @Override
     public CreateUserResponseDto getUserByPinfl(String pinfl) {
-        return users.stream()
-            .filter(u -> u.pinfl().equals(pinfl))
-            .findFirst()
+        return userRepository.findByPinfl(pinfl)
+            .map(userMapper::toResponseDto)
             .orElseThrow(() -> new RuntimeException("User not found with pinfl: " + pinfl));
     }
 }
