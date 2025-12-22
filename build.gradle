@@ -39,6 +39,7 @@ dependencies {
 	implementation 'org.flywaydb:flyway-database-postgresql'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
 
 	// Mapper
 	implementation 'org.mapstruct:mapstruct:1.4.2.Final'

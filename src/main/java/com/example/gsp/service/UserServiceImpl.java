@@ -6,6 +6,7 @@ import com.example.gsp.entity.User;
 import com.example.gsp.mapper.UserMapper;
 import com.example.gsp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(value = "users", key = "#id")
     public CreateUserResponseDto getUserById(Long id) {
         return userRepository.findById(id)
             .map(userMapper::toResponseDto)
