@@ -7,6 +7,7 @@ import com.example.gsp.mapper.UserMapper;
 import com.example.gsp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public CreateUserResponseDto createUser(CreateUserRequestDto request) {
         User user = userMapper.toEntity(request);
